@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layout>
+    <adminhtml_sales_order_view>
+        <reference name="order_totals">
+            <block type="adminhtml/sales_order_totals_item" name="iyzicoinstallmentpayment_amount" template="iyzicocheckoutform/total.phtml" />
+        </reference>
+       <reference name="content">
+            <block type="core/template" name="apilogs" template="iyzicocheckoutform/apilogs.phtml"/>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

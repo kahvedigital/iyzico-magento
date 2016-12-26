@@ -1,0 +1,35 @@
+<?php
+$thisOrder = $this->getSource();
+$theInstallmentFeeAmount = Mage::getModel('sales/order')->load($thisOrder->getId())->getIyzicoinstallmentAmount();
+$theNumberOfInstallment = Mage::getModel('sales/order')->load($thisOrder->getId())->getNumberOfInstallment();
+$theInstallmentAmount = Mage::getModel('sales/order')->load($thisOrder->getId())->getInstallmentAmount();
+
+if (!empty($theInstallmentFeeAmount)) :
+    ?>
+    <tr class="shipping">
+        <td colspan="3" align="right" style="padding:3px 9px"><?php echo $this->__('Installment Fee') ?></td>
+        <td align="right" style="padding:3px 9px"><?php echo Mage::helper('core')->currency($theInstallmentFeeAmount); ?></td>
+    </tr>
+    <?php
+endif;
+
+if (!empty($theInstallmentAmount)) :
+    ?>
+    <tr class="shipping">
+        <td colspan="3" align="right" style="padding:3px 9px"><?php echo $this->__('Installment Amount') ?></td>
+        <td align="right" style="padding:3px 9px"><?php echo Mage::helper('core')->currency($theInstallmentAmount); ?></td>
+    </tr>
+    <?php
+endif;
+
+if (!empty($theNumberOfInstallment)) :
+    ?>
+    <tr class="shipping">
+        <td colspan="3" align="right" style="padding:3px 9px"><?php echo $this->__('Installment Count') ?></td>
+        <td align="right" style="padding:3px 9px"><?php echo $theNumberOfInstallment; ?></td>
+    </tr>
+    <?php
+
+endif;
+
+

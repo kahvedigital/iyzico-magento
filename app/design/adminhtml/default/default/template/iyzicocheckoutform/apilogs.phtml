@@ -1,0 +1,102 @@
+<?php
+$orderId = $this->getRequest()->getParam('order_id');
+$collection = Mage::helper('iyzicocheckoutform')->transactionLogList($orderId);
+$resultData = $collection->getData();
+$paymentMethodCode = Mage::helper('iyzicocheckoutform')->getPaymentMethodCode($orderId);
+if (IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::IYZICO_CREDITCARD == $paymentMethodCode) {
+    ?>
+    <div class="box-recent">
+        <div class = "entry-edit">
+            <div class = "entry-edit-head">
+                <h4 class = "icon-head head-payment-method"><?php echo Mage::helper('sales')->__('Iyzico Transaction Api Logs')
+    ?></h4>
+            </div>
+            <fieldset>
+                <?php if (!empty($resultData)) { ?>
+                    <div class="grid np">
+                        <table cellspacing="0" class="data order-tables">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="a-center"><?php echo '#'; ?></th>
+                                    <th class="a-left"><?php echo 'Description'; ?></th>
+                                    <th class="a-left"><?php echo 'Status'; ?></th>
+                                    <th class="a-left"><?php echo 'Created'; ?></th>
+                                </tr>
+                            </thead>
+                            <tbody class="even">
+                                <?php
+                                $count = 1;
+                                foreach ($resultData as $record) {
+                                    $responseData = json_decode($record['response_data']);
+                                    $transactionStatus = strtolower($record['status']);
+                                    switch ($record['method_type']) {
+                                        case IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::INITIAILIZE_CHECKOUT_API:
+                                            if ('success' == $transactionStatus) {
+                                                $description = 'Transaction Token generated';
+                                            } else {
+                                                $description = 'Token genearation failed';
+                                            }
+                                            break;
+                                        case IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::AUTH_RESPONSE_API:
+                                            $paidPrice = '';
+                                            if ('success' == $transactionStatus) {
+                                                $description = 'Transaction Created';
+                                                if (!empty($responseData->paidPrice)) {
+                                                    $paidPrice = $responseData->paidPrice;
+                                                    $description .= ' - ' . Mage::helper('core')->currency($paidPrice);
+                                                }
+                                            } else {
+                                                $description = 'Tranaction failed';
+                                            }
+                                            break;
+                                        case IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::CANCEL_API:
+                                            $price = '';
+                                            if ('success' == $transactionStatus) {
+                                                $description = 'Transaction Canceled';
+                                                if (!empty($responseData->price)) {
+                                                    $price = $responseData->price;
+                                                    $description .= ' - ' . Mage::helper('core')->currency($price);
+                                                }
+                                            } else {
+                                                $description = 'Cancel transaction error';
+                                            }
+                                            break;
+                                        case IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::REFUND_API:
+                                            $price = '';
+                                            if ('success' == $transactionStatus) {
+                                                $description = 'Transaction amount refunded ';
+                                                if (!empty($responseData->price)) {
+                                                    $price = $responseData->price;
+                                                    $description .= ' - ' . Mage::helper('core')->currency($price);
+                                                }
+                                            } else {
+                                                $description = 'Refund transaction error';
+                                            }
+                                            break;
+                                        default:
+                                            $description = '-';
+                                    }
+                                    ?>
+                                    <tr class="border">
+                                        <td class="a-center"><?php echo $count; ?></td>
+                                        <td class="a-left"><?php echo $description; ?></td>
+                                        <td class="a-left"><?php echo $transactionStatus; ?></td>
+                                        <td class="a-left"><?php echo $record['created']; ?></td>
+                                    </tr>
+                                    <?php
+                                    $count++;
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                } else {
+                    ?>
+                    <div>No Records Found</div>
+                <?php }
+                ?>
+            </fieldset>
+        </div>
+    </div>
+<?php } ?>
