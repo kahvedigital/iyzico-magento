@@ -1,4 +1,4 @@
-Enabled,Enabled
+Enabled,Açık
 Activate Testmode,Mode: Test/Live
 TestApiId,TEST API ID
 TestSecretKey,TEST SECRET KEY
@@ -7,20 +7,20 @@ LiveSecretKey,LIVE SECRET KEY
 Iyzico Basic Setting,iyzico ayarları 
 Error before redirect,Bir hata oluştu. İşlem sırasında bir hata oluştu.
 This page is not allowed at this time.,Bir hata oluştu. Sayfayı acma yetkiniz yok.
-Please make sure that you enter a secure SSL URL.,Bir hata oluştu. SSL'nin etkin olduğundan emin olun.
-SortOrderTxt,Sort Order,
+Please make sure that you enter a secure SSL URL.,Bir hata oluştu. SSL'in etkin olduğundan emin olun.
+SortOrderTxt,Sıralama,
 kredi kartı (powered by iyzico),kredi kartı (powered by iyzico)
 Live, Live,
 Test, Test,
-orderID,siparis no,
+orderID,sipariş no,
 Credit Card,Kredi Kartı
-transaction marked as invalid,işlem geçersiz olarak işaretlenir
-This email is already registered as a Iyzico merchant.," ""Bu e-posta zaten Iyzico tüccar olarak tescil edilmiştir."""
-Registration successful. Keys fetched and filled successfully. Please hit Save button to save the settings.," ""Kayıt başarılı. Tuşlar getirilen ve başarıyla dolu. Ayarları kaydetmek için Kaydet tuşuna basın lütfen."""
-Invalid call.," ""Geçersiz arayın."""
+transaction marked as invalid,işlem geçersiz olarak işaretlenmiş
+This email is already registered as a iyzico merchant.," ""Bu e-posta zaten iyzico tüccar olarak tescil edilmiştir."""
+Registration successful. Keys fetched and filled successfully. Please hit Save button to save the settings.," ""Kayıt başarılı. Anahtarlar alındı ve başarıyla dolduruldu. Lütfen kaydetmek için Kaydet butonuna basın."""
+Invalid call.," ""Geçersiz istek."""
 Token Expired.," ""Token süresi doldu."""
 PartnerId does not exists.," ""PartnerID bulunamadı."""
-Invalid Order or Order is already placed,Geçersiz Sipariş veya sipariş zaten yerleştirilir
+Invalid Order or Order is already placed,Geçersiz Sipariş veya Sipariş daha önce oluşturulmuş.
 Invalid Payment Information,Geçersiz Ödeme Bilgileri
 Invalid Order,Geçersiz Sipariş
 Currently only TRY is supported,Şu anda sadece TL desteklenmektedir.
