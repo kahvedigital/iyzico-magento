@@ -1,0 +1,22 @@
+Enabled,Enabled
+Activate Testmode,Mode: Test/Live
+TestApiId,TEST API ID
+TestSecretKey,TEST SECRET KEY
+LiveApiId,LIVE API ID
+LiveSecretKey,LIVE SECRET KEY
+SortOrderTxt,Sort Order,
+SortOrderTxt,Sort Order,
+Iyzico Basic Setting,iyzico Setting,
+Error before redirect,This site encountered an unexpected error, please contact the store owner.
+This page is not allowed at this time.,This page is not allowed at this time.,
+Please make sure that you enter a secure SSL URL.,Please make sure that you enter a secure SSL URL.,
+Sort Order,Sort Order,
+Kredi Kartı,Credit Card,
+Kredi Kartı (powered by iyzico),Credit Card (powered by iyzico),
+Live, Live,
+Test, Test,
+Credit Card,Credit Card
+Invalid Order or Order is already placed,Invalid Order or Order is already placed
+Invalid Payment Information,Invalid Payment Information
+Currently only TRY is supported,Currently only TRY is supported
+"Please make sure that the currency value in your payment request is one of the (USD, EUR, GBP, IRR, TL) valid values", "Please make sure that the currency value in your payment request is one of the (USD, EUR, GBP, IRR, TL) valid values"

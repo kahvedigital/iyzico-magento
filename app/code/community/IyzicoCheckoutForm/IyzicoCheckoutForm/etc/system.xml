@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <iyzicocheckoutform_creditcard module="iyzicocheckoutform" translate="label">
+                    <label>Credit Card (powered by iyzicoCheckoutForm)</label>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    
+                    <sort_order>1000</sort_order>
+                    <fields>
+                        <version>
+                            <label>v1.0.1</label>
+                            <sort_order>1</sort_order>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <frontend_type>label</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
+                        
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <sort_order>2</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                 
+                        <api_id translate="label">
+                            <label>ApiId</label>
+                            <sort_order>3</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[You can get your API ID and Secret Key values from  <a href="https://merchant.iyzipay.com/settings" target="_blank">https://merchant.iyzipay.com/settings</a>]]></comment>
+                        </api_id>
+                        
+                        <secret_key translate="label">
+                            <label>SecretKey</label>
+                            <sort_order>4</sort_order>
+                            <frontend_type>text</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </secret_key>
+                        
+                        <sort_order translate="label">
+                            <label>SortOrderTxt</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                        
+                        <iframe_class translate="label">
+                            <label>Form Class</label>
+                            <sort_order>6</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Source_IframeClass</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </iframe_class>
+                        
+                    </fields>
+                </iyzicocheckoutform_creditcard>
+            </groups>
+        </payment>
+    </sections>
+</config>
