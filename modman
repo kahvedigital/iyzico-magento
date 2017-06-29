@@ -1,0 +1,10 @@
+app/code/community/IyzicoCheckoutForm/IyzicoCheckoutForm/ app/code/community/IyzicoCheckoutForm/IyzicoCheckoutForm/
+app/design/adminhtml/default/default/layout/iyzicocheckoutform.xml app/design/adminhtml/default/default/layout/iyzicocheckoutform.xml
+app/design/adminhtml/default/default/template/iyzicocheckoutform/ app/design/adminhtml/default/default/template/iyzicocheckoutform/
+app/design/frontend/base/default/template/iyzicocheckoutform/ app/design/frontend/base/default/template/iyzicocheckoutform/
+app/etc/modules/IyzicoCheckoutForm_IyzicoCheckoutForm.xml app/etc/modules/IyzicoCheckoutForm_IyzicoCheckoutForm.xml
+app/locale/en_US/IyzicoCheckoutForm_IyzicoCheckoutForm.csv app/locale/en_US/IyzicoCheckoutForm_IyzicoCheckoutForm.csv
+app/locale/tr_TR/IyzicoCheckoutForm_IyzicoCheckoutForm.csv app/locale/tr_TR/IyzicoCheckoutForm_IyzicoCheckoutForm.csv
+lib/src/Iyzipay/ lib/src/Iyzipay/
+lib/IyzipayBootstrap.php lib/IyzipayBootstrap.php
+skin/frontend/base/default/images/iyzicocheckoutform/ skin/frontend/base/default/images/iyzicocheckoutform/
