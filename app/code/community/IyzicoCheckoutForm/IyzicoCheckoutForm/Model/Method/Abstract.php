@@ -37,7 +37,7 @@ abstract class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Method_Abstract exten
         return Mage::getSingleton('customer/session')->getRedirectUrl();
     }
 
-    public function authorize() {
+    public function authorize(Varien_Object $payment, $amount) {
         try {
             $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
             $currencyArr = Mage::helper('iyzicocheckoutform')->getCurrencyArr();
