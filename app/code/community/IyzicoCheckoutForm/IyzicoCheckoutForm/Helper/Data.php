@@ -1,7 +1,7 @@
 <?php
 class IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data extends Mage_Core_Helper_Abstract {
 
-    const BASE_URL = "https://sandbox-api.iyzipay.com";
+    const BASE_URL = "https://api.iyzipay.com";
     const INITIAILIZE_CHECKOUT_API = 1;
     const AUTH_RESPONSE_API = 2;
     const CANCEL_API = 3;
