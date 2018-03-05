@@ -78,10 +78,10 @@ if (IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::IYZICO_CREDITCARD == $pay
                                     }
                                     ?>
                                     <tr class="border">
-                                        <td class="a-center"><?php echo $count; ?></td>
-                                        <td class="a-left"><?php echo $description; ?></td>
-                                        <td class="a-left"><?php echo $transactionStatus; ?></td>
-                                        <td class="a-left"><?php echo $record['created']; ?></td>
+                                        <td class="a-center"><?php echo $this->escapeHtml($count); ?></td>
+                                        <td class="a-left"><?php echo $this->escapeHtml($description); ?></td>
+                                        <td class="a-left"><?php echo $this->escapeHtml($transactionStatus); ?></td>
+                                        <td class="a-left"><?php echo $this->escapeHtml($record['created']); ?></td>
                                     </tr>
                                     <?php
                                     $count++;
