@@ -1,7 +1,7 @@
 <?php
 class IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data extends Mage_Core_Helper_Abstract {
 
-    const BASE_URL = "https://api.iyzipay.com";
+    const BASE_URL = "https://sandbox-api.iyzipay.com";
     const INITIAILIZE_CHECKOUT_API = 1;
     const AUTH_RESPONSE_API = 2;
     const CANCEL_API = 3;
@@ -133,17 +133,24 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data extends Mage_Core_Helper
     }
 
     public function saveIyziTransactionApiLog($data, $id = null) {
+
+
         try {
             $apiLogDataArr = array();
             foreach ($data as $key => $value) {
-                $apiLogDataArr[$key] = $value;
+                $apiLogDataArr[$key] = Mage::getSingleton('core/resource')->getConnection('default_write')->quote($value);
             }
+
             if (!empty($id)) {
+
                 $model = Mage::getModel('iyzicocheckoutform/iyziTransactionLog')->load($id)->addData($apiLogDataArr);
                 $model->setId($id)->save();
+            
             } else {
+            
                 $iyziTransactionApiLogModel = Mage::getModel('iyzicocheckoutform/iyziTransactionLog')->setData($apiLogDataArr);
                 $id = $iyziTransactionApiLogModel->save()->getId();
+            
             }
             return $id;
         } catch (Exception $e) {

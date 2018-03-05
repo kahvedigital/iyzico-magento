@@ -291,7 +291,10 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_IyzicoCheckoutForm_Request ext
 
                 $response = \Iyzipay\Model\CheckoutFormInitialize::create($this->_request, $this->_configuration);
 				
-                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $response->getStatus()), $lastInsertedId);
+                $status = Mage::getSingleton('core/resource')->getConnection('default_write')->quote($response->getStatus());
+
+                
+                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $status), $lastInsertedId);
                 return $response;
             } else {
                 return 'make_iyzico_api_call_false';

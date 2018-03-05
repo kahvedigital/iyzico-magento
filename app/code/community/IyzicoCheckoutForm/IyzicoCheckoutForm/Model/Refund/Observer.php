@@ -9,7 +9,9 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Refund_Observer {
     private $_price = 0;
 
     public function iyzicoItemRefund(Varien_Event_Observer $observer) {
+
         $creditMemo = $observer->getEvent()->getCreditmemo();
+        $getEscape     = Mage::getSingleton('core/resource')->getConnection('default_write');
         $postItems = $_POST;
         $order = $creditMemo->getOrder();
         $orderData = $order->getOrigData();
@@ -26,15 +28,15 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Refund_Observer {
                 Mage::throwException(Mage::helper('iyzicocheckoutform')->__("Please make sure that the currency value in your payment request is one of the (USD, EUR, GBP, IRR, TL) valid values"));
             }
             foreach ($items as $item) {
-                $itemId = $item->getItemId();
-                $refundItemQty = $postItems['creditmemo']['items'][$itemId]['qty'];
+                $itemId = (int) $item->getItemId();
+                $refundItemQty = $getEscape->quote($postItems['creditmemo']['items'][$itemId]['qty']);
                 $itemPrice = $item->getPrice();
                 $refundAmt = $itemPrice * $refundItemQty;
                 $productItemId = $item->getProductId();
                 if ($refundItemQty > 0) {
                     $customInfoArr = unserialize($customInfo);
-                    $this->_conversationId = $customInfoArr['conversation_id'];
-                    $this->_paymentTransactionId = $customInfoArr['items'][$productItemId]['payment_transaction_id'];
+                    $this->_conversationId = (int) $customInfoArr['conversation_id'];
+                    $this->_paymentTransactionId = (int) $customInfoArr['items'][$productItemId]['payment_transaction_id'];
                     $this->_price = $refundAmt;
                     $this->_setClientConfiguration();
                     $this->_setCreateRequest($currency);
@@ -54,7 +56,9 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Refund_Observer {
 
                     $response = \Iyzipay\Model\Refund::create($this->_request, $this->_configuration);
 
-                    Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $response->getStatus()), $lastInsertedId);
+                    $status = $getEscape->quote($response->getStatus());
+
+                    Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $status), $lastInsertedId);
 
                     $refundPaymentStatus = $response->getStatus();
                     if ('success' != $refundPaymentStatus) {

@@ -8,7 +8,9 @@ if (!empty($theInstallmentFeeAmount)) :
     ?>
     <tr class="1">
         <td class="label"><?php echo $this->__('Installment Fee') ?></td>
-        <td><span class="price"><?php echo Mage::helper('core')->currency($theInstallmentFeeAmount); ?></span></td>
+        <td><span class="price"><?php $data = Mage::helper('core')->currency($theInstallmentFeeAmount);
+            echo $this->escapeHtml($data);
+         ?></span></td>
     </tr>
     <?php
 endif;
@@ -17,7 +19,9 @@ if (!empty($theInstallmentAmount)) :
     ?>
     <tr class="1">
         <td class="label"><?php echo $this->__('Installment Amount') ?></td>
-        <td><span class="price"><?php echo Mage::helper('core')->currency($theInstallmentAmount); ?></span></td>
+        <td><span class="price"><?php $data = Mage::helper('core')->currency($theInstallmentAmount);
+        echo $this->escapeHtml($data);
+         ?></span></td>
     </tr>
     <?php
 endif;
@@ -26,9 +30,8 @@ if (!empty($theNumberOfInstallment)) :
     ?>
     <tr class="1">
         <td class="label"><?php echo $this->__('Installment Count') ?></span></td>
-    <td><span class="price"><?php echo $theNumberOfInstallment; ?></span></td>
+    <td><span class="price"><?php echo $this->escapeHtml($theNumberOfInstallment); ?></span></td>
     </tr>
     <?php
 endif;
 ?>
-

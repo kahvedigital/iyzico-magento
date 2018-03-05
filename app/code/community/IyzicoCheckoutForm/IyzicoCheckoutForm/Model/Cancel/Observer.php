@@ -9,6 +9,7 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Cancel_Observer {
     private $_paymentId = '';
 
     public function iyzicoOrderCancel(Varien_Event_Observer $observer) {
+
         $paymentMethod = $observer->getPayment()->getMethodInstance()->getCode();
         if ($paymentMethod == IyzicoCheckoutForm_IyzicoCheckoutForm_Helper_Data::IYZICO_CREDITCARD) {
             $currentCurrencyCode = Mage::app()->getStore()->getCurrentCurrencyCode();
@@ -18,14 +19,19 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Cancel_Observer {
             }
 
             $customInfo = $observer->getPayment()->getAdditionalInformation('custom_info');
+
             $customInfoArr = unserialize($customInfo);
-            $this->_conversationId = $customInfoArr['conversation_id'];
-            $this->_paymentId = $customInfoArr['payment_id'];
+            $getEscape     = Mage::getSingleton('core/resource')->getConnection('default_write');
+
+            $this->_conversationId = (int) $customInfoArr['conversation_id'];
+            $this->_paymentId = (int) $customInfoArr['payment_id'];
 
             $payment = $observer->getEvent()->getPayment();
             $order = $payment->getOrder();
             $orderData = $order->getOrigData();
+
             $orderIncrementId = $orderData['increment_id'];
+
 
             if (($order->getStatus() != 'pending_payment') && (!empty($this->_paymentId))) {
                 $this->_initIyzipayBootstrap();
@@ -42,11 +48,16 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_Cancel_Observer {
                     'modified' => date('Y-m-d H:i:s'),
                 );
 
+
+
                 $lastInsertedId = Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog($apiLogData);
 
                 $response = \Iyzipay\Model\Cancel::create($this->_request, $this->_configuration);
 
-                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $response->getStatus()), $lastInsertedId);
+                $status = $getEscape->quote($response->getStatus());
+
+
+                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $status), $lastInsertedId);
                 $cancelPaymentStatus = $response->getStatus();
                 if ('success' != $cancelPaymentStatus) {
                     $orderId = $order->getEntityId();
