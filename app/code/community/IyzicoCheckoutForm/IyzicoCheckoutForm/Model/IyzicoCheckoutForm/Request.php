@@ -41,7 +41,7 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_IyzicoCheckoutForm_Request ext
         $this->_request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $this->_request->setLocale($locale);
         $this->_request->setConversationId($externalId);
-	$this->_request->setPaymentSource("MAGENTO-" . VERSION ."-".$iyzicoversion);
+	$this->_request->setPaymentSource("MAGENTO-".$iyzicoversion);
 	$this->_request->setCurrency($currency);
         $this->_request->setBasketId($this->_getOrder()->getQuoteId() . '_' . $externalId . '_' . $this->_getOrderId());
         $this->_request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
