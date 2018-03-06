@@ -33,6 +33,7 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_IyzicoCheckoutForm_Request ext
     }
 
     protected function _setCreateRequest() {
+	$iyzicoversion="1.0.1";
         $currency = Mage::helper('iyzicocheckoutform')->getCurrencyConstant();
         $externalId = $this->_getExternalId();
         $siteLang = explode('_', Mage::app()->getLocale()->getLocaleCode());
@@ -40,7 +41,8 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_IyzicoCheckoutForm_Request ext
         $this->_request = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
         $this->_request->setLocale($locale);
         $this->_request->setConversationId($externalId);
-        $this->_request->setCurrency($currency);
+	$this->_request->setPaymentSource("MAGENTO-".$iyzicoversion);
+	$this->_request->setCurrency($currency);
         $this->_request->setBasketId($this->_getOrder()->getQuoteId() . '_' . $externalId . '_' . $this->_getOrderId());
         $this->_request->setPaymentGroup(\Iyzipay\Model\PaymentGroup::PRODUCT);
         $this->_request->setCallbackUrl($this->removeSIDqueryStrVar() . 'iyzicocheckoutform/response/handleIyzicoPostResponse');
@@ -291,7 +293,10 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_Model_IyzicoCheckoutForm_Request ext
 
                 $response = \Iyzipay\Model\CheckoutFormInitialize::create($this->_request, $this->_configuration);
 				
-                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $response->getStatus()), $lastInsertedId);
+                $status = Mage::getSingleton('core/resource')->getConnection('default_write')->quote($response->getStatus());
+
+                
+                Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $response->getRawResult(), 'status' => $status), $lastInsertedId);
                 return $response;
             } else {
                 return 'make_iyzico_api_call_false';

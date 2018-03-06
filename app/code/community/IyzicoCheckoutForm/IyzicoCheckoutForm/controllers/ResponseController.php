@@ -40,6 +40,8 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
     public function handleIyzicoPostResponseAction() {
 
         $postDataResponse = Mage::app()->getRequest()->getPost();
+
+
         $this->_responseToken = $postDataResponse['token'];
         $this->_conversationId = !empty($postDataResponse['conversationId']) ? $postDataResponse['conversationId'] : '';
         $this->_initIyzipayBootstrap();
@@ -52,14 +54,18 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
             'response_data' => '',
             'status' => 'pending',
             'created' => date('Y-m-d H:i:s'),
-            'modified' => date('Y-m-d H:i:s'),
+            'modified' => date('Y-m-d H:i:s')
         );
 
         $lastInsertedId = Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog($apiLogData);
 
         $authResponse = \Iyzipay\Model\CheckoutForm::retrieve($this->_requestObj, $this->_configObj);
 
-        Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $authResponse->getRawResult(), 'status' => $authResponse->getPaymentStatus()), $lastInsertedId);
+        $status = Mage::getSingleton('core/resource')->getConnection('default_write')->quote($authResponse->getStatus());
+
+
+        Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('response_data' => $authResponse->getRawResult(), 'status' => $status), $lastInsertedId);
+
         if (!empty($authResponse)) {
             $order = Mage::getSingleton('sales/order');
             $this->_getPostResponseActionUrl($order, $authResponse, $lastInsertedId);
@@ -69,7 +75,10 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
     }
 
     private function _getPostResponseActionUrl(Mage_Sales_Model_Order $order, $response, $lastInsertedId) {
+
+        $getEscape = Mage::getSingleton('core/resource')->getConnection('default_write');
         $basketId = $response->getBasketId();
+
         $cartItem = Mage::helper('checkout/cart')->getCart()->getItemsCount();
 
         if (!empty($basketId) && !empty($cartItem)) {
@@ -81,6 +90,8 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
             return $this->_setErrorRedirect("Invalid Order");
         }
 
+        $basketId = $getEscape->quote($basketId);
+
         Mage::helper('iyzicocheckoutform')->saveIyziTransactionApiLog(array('order_increment_id' => $orderId), $lastInsertedId);
 
         $paymentStatus = $response->getPaymentStatus();
@@ -89,16 +100,16 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
             return $this->_setErrorRedirect('There is an some error, please try again');
         }
         if ('pending_payment' == $orderState) {
-            $token = $response->getToken();
-            $paymentId = $response->getPaymentId();
-            $conversationId = $response->getConversationId();
-            $orderItemsArr = $response->getPaymentItems();
+            $token = $getEscape->quote($response->getToken());
+            $paymentId = (int) $response->getPaymentId();
+            $conversationId = $getEscape->quote($response->getConversationId());
+            $orderItemsArr = $getEscape->quote($response->getPaymentItems());
             $itemsArr = array();
             foreach ($orderItemsArr as $value) {
-                $itemId = $value->getItemId();
+                $itemId = $getEscape->quote($value->getItemId());
                 $itemsArr[$itemId]['id'] = $itemId;
-                $itemsArr[$itemId]['payment_transaction_id'] = $value->getPaymentTransactionId();
-                $itemsArr[$itemId]['price'] = $value->getPrice();
+                $itemsArr[$itemId]['payment_transaction_id'] = $getEscape->quote($value->getPaymentTransactionId());
+                $itemsArr[$itemId]['price'] = $getEscape->quote($value->getPrice());
             }
             $customInfo = array(
                 'IDENTIFICATION_REFERENCEID' => $token,
@@ -111,8 +122,8 @@ class IyzicoCheckoutForm_IyzicoCheckoutForm_ResponseController extends Mage_Core
             $order->getPayment()->setAdditionalInformation(
                     'custom_info', $customInfo
             );
-            $iyzicoAmount = $response->getPaidPrice();
-            $installmentCount = $response->getInstallment();
+            $iyzicoAmount = $getEscape->quote($response->getPaidPrice());
+            $installmentCount = $getEscape->quote($response->getInstallment());
 
             if ($installmentCount > 1) {
                 $granTotalCart = $order->getGrandTotal();
